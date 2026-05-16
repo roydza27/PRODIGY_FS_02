@@ -6,16 +6,18 @@ import data from "@/features/dashboard/data/data.json"
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-6 rounded">
-      <SectionCards />
-
-      <div className="px-0 lg:px-0">
-        <ChartAreaInteractive />
+    <div className="@container/main flex flex-1 flex-col gap-2">
+      <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+        <div className="px-4 lg:px-6 pt-4 pb-2">
+          <h2 className="font-heading text-2xl font-bold tracking-tight text-[#FAFAFA]">Platform Overview</h2>
+          <p className="text-sm text-[#A1A1AA] mt-1">Welcome back, John. Here's what's happening across your workspaces today.</p>
+        </div>
+        <SectionCards />
+        <div className="px-4 lg:px-6">
+          <ChartAreaInteractive />
+        </div>
+        <DataTable data={data} />
       </div>
-
-      <DataTable data={data} />
-
-      
     </div>
   )
 }
