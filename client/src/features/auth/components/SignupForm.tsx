@@ -30,7 +30,7 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
-      await registerUser({ name, email, password });
+      await registerUser({ name, email, password })
       navigate("/login");
     } catch (err) {
       setError("Registration failed. Please try again with a different email.");

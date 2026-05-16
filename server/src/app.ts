@@ -8,7 +8,12 @@ import { errorHandler } from "@/middlewares/error.middleware";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+)
 
 app.use(express.json());
 

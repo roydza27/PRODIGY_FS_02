@@ -41,9 +41,9 @@ const data = {
   },
   navMain: [
     {
-      title: "Overview",
-      url: "#",
-      icon: <IconDashboard />,
+      title: "Employees",
+      url: "/dashboard/employees",
+      icon: <IconUsers />,
       isActive: true,
     },
     {

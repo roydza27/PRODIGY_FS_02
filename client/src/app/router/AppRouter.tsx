@@ -14,6 +14,7 @@ import HomePage from "@/features/home/pages/HomePage"
 import LoginPage from "@/features/auth/pages/LoginPage"
 import RegisterPage from "@/features/auth/pages/RegisterPage"
 import DashboardPage from "@/features/dashboard/pages/DashboardPage"
+import EmployeePage from "@/features/employee/pages/EmployeeListPage"
 
 const AppRouter = () => {
   return (
@@ -39,6 +40,10 @@ const AppRouter = () => {
             <Route
               path="/dashboard"
               element={<DashboardPage />}
+            />
+            <Route
+              path="/dashboard/employees"
+              element={<EmployeePage />}
             />
           </Route>
         </Route>

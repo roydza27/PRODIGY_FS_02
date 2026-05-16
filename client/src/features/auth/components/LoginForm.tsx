@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "@/features/auth/services/auth.service";
 import { useAuth } from "@/app/providers/AuthProvider";
+import axios from "axios";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -19,17 +20,22 @@ export default function LoginForm() {
     setError("");
 
     try {
-      const data = await loginUser({ email, password });
-      
+      const data = await loginUser({ email, password })
       setSession({
         user: data.user,
         token: data.token,
         remember: rememberMe,
       })
-
       navigate("/dashboard", { replace: true })
     } catch (err) {
-      setError("Invalid email or password");
+      if (axios.isAxiosError(err)) {
+        console.log("STATUS:", err.response?.status)
+        console.log("DATA:", err.response?.data)
+        setError(err.response?.data?.message || "Request failed")
+      } else {
+        console.error(err)
+        setError("Request failed")
+      }
     } finally {
       setLoading(false);
     }
