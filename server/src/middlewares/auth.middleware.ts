@@ -13,6 +13,13 @@ export function protect(req: Request, res: Response, next: NextFunction) {
     }
 
     const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "No token provided",
+      });
+    }
+
     const JWT_SECRET = process.env.JWT_SECRET;
 
     if (!JWT_SECRET) {
@@ -47,7 +54,7 @@ export function authorizeRoles(...allowedRoles: string[]) {
       });
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    if (!req.user.role || !allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
         message: "Access denied",
