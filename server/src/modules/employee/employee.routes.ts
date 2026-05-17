@@ -1,25 +1,39 @@
-import { Router } from "express";
+import { Router } from "express"
 import {
   createEmployeeController,
   deleteEmployeeController,
   getAllEmployeesController,
   getEmployeeByIdController,
   updateEmployeeController,
-} from "./employee.controller";
+} from "./employee.controller"
 
-import { createEmployeeSchema, updateEmployeeSchema } from "./employee.validation";
-import { protect, authorizeRoles } from "@/middlewares/auth.middleware";
-import { validateBody } from "@/middlewares/validateBody.middleware";
+import { createEmployeeSchema, updateEmployeeSchema } from "./employee.validation"
+import { protect, authorizeRoles } from "@/middlewares/auth.middleware"
+import { validateBody } from "@/middlewares/validateBody.middleware"
 
-const router = Router();
+const router = Router()
 
-router.use(protect);
-router.use(authorizeRoles("admin"));
+router.use(protect)
 
-router.post("/", validateBody(createEmployeeSchema), createEmployeeController);
-router.get("/", getAllEmployeesController);
-router.get("/:id", getEmployeeByIdController);
-router.patch("/:id", validateBody(updateEmployeeSchema), updateEmployeeController);
-router.delete("/:id", deleteEmployeeController);
+// read access for both admin and user
+router.get("/", authorizeRoles("admin", "user"), getAllEmployeesController)
+router.get("/:id", authorizeRoles("admin", "user"), getEmployeeByIdController)
 
-export default router;
+// write access for admin only
+router.post(
+  "/",
+  authorizeRoles("admin"),
+  validateBody(createEmployeeSchema),
+  createEmployeeController
+)
+
+router.patch(
+  "/:id",
+  authorizeRoles("admin"),
+  validateBody(updateEmployeeSchema),
+  updateEmployeeController
+)
+
+router.delete("/:id", authorizeRoles("admin"), deleteEmployeeController)
+
+export default router

@@ -19,6 +19,8 @@ import { EmployeeDetailsDrawer } from "@/features/employee/components/EmployeeDe
 import { EmployeeEditDrawer } from "@/features/employee/components/EmployeeEditDrawer"
 import { EmployeeCreateDrawer } from "@/features/employee/components/EmployeeCreateDrawer"
 
+import { useAuth } from "@/app/providers/AuthProvider"
+
 import {
   deleteEmployee,
   getEmployees,
@@ -46,7 +48,7 @@ const EmployeeListPage = () => {
   const [status, setStatus] = React.useState<EmploymentStatus | "all">("all")
 
   const [page, setPage] = React.useState(1)
-  const [limit, setLimit] = React.useState(10)
+  const [limit] = React.useState(10)
   const [total, setTotal] = React.useState(0)
   const [totalPages, setTotalPages] = React.useState(0)
 
@@ -54,6 +56,9 @@ const EmployeeListPage = () => {
   const [employeeToEdit, setEmployeeToEdit] = React.useState<Employee | null>(null)
   const [employeeToDelete, setEmployeeToDelete] = React.useState<Employee | null>(null)
   const [employeeToCreate, setEmployeeToCreate] = React.useState(false)
+
+  const { user } = useAuth()
+  const isAdmin = user?.role === "admin"
 
   const loadEmployees = React.useCallback(async () => {
     try {
@@ -164,10 +169,13 @@ const EmployeeListPage = () => {
   return (
     <div className="flex h-full w-full flex-col bg-[#111113]/95 text-[#FAFAFA]">
       <div className="flex flex-col gap-6 px-4 py-4 lg:px-6 lg:py-6">
-        <EmployeePageHeader onAddEmployee={() => setEmployeeToCreate(true)} />
+        <EmployeePageHeader
+          onAddEmployee={() => setEmployeeToCreate(true)}
+          canAdd={isAdmin}
+        />
 
         <EmployeeStats
-          total={total}
+          total={employees.length}
           active={employees.filter((employee) => employee.employmentStatus === "active").length}
           onLeave={employees.filter((employee) => employee.employmentStatus === "on_leave").length}
         />
@@ -198,6 +206,7 @@ const EmployeeListPage = () => {
             onViewEmployee={setSelectedEmployee}
             onEditEmployee={setEmployeeToEdit}
             onDeleteEmployee={setEmployeeToDelete}
+            canManage={isAdmin}
           />
         )}
       </div>
@@ -208,62 +217,77 @@ const EmployeeListPage = () => {
         onOpenChange={(open) => {
           if (!open) setSelectedEmployee(null)
         }}
-        onEdit={(employee) => {
-          setSelectedEmployee(null)
-          setEmployeeToEdit(employee)
-        }}
-        onDelete={(employee) => {
-          setSelectedEmployee(null)
-          setEmployeeToDelete(employee)
-        }}
+        onEdit={
+          isAdmin
+            ? (employee) => {
+                setSelectedEmployee(null)
+                setEmployeeToEdit(employee)
+              }
+            : undefined
+        }
+        onDelete={
+          isAdmin
+            ? (employee) => {
+                setSelectedEmployee(null)
+                setEmployeeToDelete(employee)
+              }
+            : undefined
+        }
+        canManage={isAdmin}
       />
 
-      <EmployeeCreateDrawer
-        open={employeeToCreate}
-        onOpenChange={setEmployeeToCreate}
-        onCreate={handleCreateEmployee}
-      />
+      {isAdmin ? (
+        <EmployeeCreateDrawer
+          open={employeeToCreate}
+          onOpenChange={setEmployeeToCreate}
+          onCreate={handleCreateEmployee}
+        />
+      ) : null}
 
-      <EmployeeEditDrawer
-        employee={employeeToEdit}
-        open={Boolean(employeeToEdit)}
-        onOpenChange={(open) => {
-          if (!open) setEmployeeToEdit(null)
-        }}
-        onSave={handleSaveEmployee}
-      />
+      {isAdmin ? (
+        <EmployeeEditDrawer
+          employee={employeeToEdit}
+          open={Boolean(employeeToEdit)}
+          onOpenChange={(open) => {
+            if (!open) setEmployeeToEdit(null)
+          }}
+          onSave={handleSaveEmployee}
+        />
+      ) : null}
 
-      <AlertDialog
-        open={Boolean(employeeToDelete)}
-        onOpenChange={(open) => {
-          if (!open) setEmployeeToDelete(null)
-        }}
-      >
-        <AlertDialogContent className="border-white/10 bg-[#111113] text-[#FAFAFA]">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete employee?</AlertDialogTitle>
-            <AlertDialogDescription className="text-[#A1A1AA]">
-              This will permanently remove{" "}
-              <span className="text-[#FAFAFA]">
-                {employeeToDelete?.fullName}
-              </span>
-              .
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+      {isAdmin ? (
+        <AlertDialog
+          open={Boolean(employeeToDelete)}
+          onOpenChange={(open) => {
+            if (!open) setEmployeeToDelete(null)
+          }}
+        >
+          <AlertDialogContent className="border-white/10 bg-[#111113] text-[#FAFAFA]">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete employee?</AlertDialogTitle>
+              <AlertDialogDescription className="text-[#A1A1AA]">
+                This will permanently remove{" "}
+                <span className="text-[#FAFAFA]">
+                  {employeeToDelete?.fullName}
+                </span>
+                .
+              </AlertDialogDescription>
+            </AlertDialogHeader>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel className="border-white/10 bg-transparent text-[#FAFAFA] hover:bg-white/5">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-600 text-white hover:bg-red-500"
-              onClick={handleDeleteEmployee}
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="border-white/10 bg-transparent text-[#FAFAFA] hover:bg-white/5">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600 text-white hover:bg-red-500"
+                onClick={handleDeleteEmployee}
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ): null }
 
       <div className="px-4 pb-6 text-sm text-[#A1A1AA] lg:px-6">
         Page {page} of {totalPages || 1}

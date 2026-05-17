@@ -61,6 +61,7 @@ export type EmployeeTableProps = {
   onViewEmployee: (employee: Employee) => void
   onEditEmployee: (employee: Employee) => void
   onDeleteEmployee: (employee: Employee) => void
+  canManage?: boolean
 }
 
 export type DataTableProps<TData extends { id: string }> = {

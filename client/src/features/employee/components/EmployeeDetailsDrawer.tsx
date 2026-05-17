@@ -35,6 +35,7 @@ type EmployeeDetailsDrawerProps = {
   onOpenChange: (open: boolean) => void
   onEdit?: (employee: EmployeeData) => void
   onDelete?: (employee: EmployeeData) => void
+  canManage?:boolean
 }
 
 const statusStyles: Record<EmployeeData["employmentStatus"], string> = {
@@ -88,6 +89,7 @@ export function EmployeeDetailsDrawer({
   onOpenChange,
   onEdit,
   onDelete,
+  canManage = false,
 }: EmployeeDetailsDrawerProps) {
   const isMobile = useIsMobile()
 
@@ -146,23 +148,35 @@ export function EmployeeDetailsDrawer({
               </div>
             </div>
 
-            <DrawerFooter className="border-t border-white/10 px-6 py-4">
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button
-                  className="rounded-full bg-[#FAFAFA] text-[#09090B] hover:bg-[#FAFAFA]/90"
-                  onClick={() => employee && onEdit?.(employee)}
-                >
-                  Edit Employee
-                </Button>
+            {canManage && employee ? (
+              <DrawerFooter className="border-t border-white/10 px-6 py-4">
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Button
+                    className="rounded-full bg-[#FAFAFA] text-[#09090B] hover:bg-[#FAFAFA]/90"
+                    onClick={() => onEdit?.(employee)}
+                  >
+                    Edit Employee
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="rounded-full border-white/10 bg-transparent text-[#FAFAFA] hover:bg-white/5"
+                    onClick={() => onDelete?.(employee)}
+                  >
+                    Delete Employee
+                  </Button>
+                </div>
+              </DrawerFooter>
+            ) : (
+              <DrawerFooter className="border-t border-white/10 px-6 py-4">
                 <Button
                   variant="outline"
                   className="rounded-full border-white/10 bg-transparent text-[#FAFAFA] hover:bg-white/5"
-                  onClick={() => employee && onDelete?.(employee)}
+                  onClick={() => onOpenChange(false)}
                 >
-                  Delete Employee
+                  Close
                 </Button>
-              </div>
-            </DrawerFooter>
+              </DrawerFooter>
+            )}
           </div>
         ) : null}
       </DrawerContent>

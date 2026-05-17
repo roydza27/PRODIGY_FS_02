@@ -62,8 +62,9 @@ export function EmployeeTable({
   data,
   onViewEmployee,
   onEditEmployee,
-  onDeleteEmployee
-}: EmployeeTableProps) {
+  onDeleteEmployee,
+  canManage = false,
+}: EmployeeTableProps){
   const columns: ColumnDef<Employee>[] = [
     {
       id: "drag",
@@ -92,7 +93,7 @@ export function EmployeeTable({
         </div>
       ),
 
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div className="flex items-center justify-start pl-2">
           <Checkbox
             checked={row.getIsSelected()}
@@ -182,51 +183,53 @@ export function EmployeeTable({
       },
     },
 
-    {
-      id: "actions",
+    ...(canManage?[
+      {
+        id: "actions",
 
-      cell: ({ row }) => (
-        <div className="flex justify-start">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="flex size-8 text-[#A1A1AA] data-[state=open]:bg-[#18181B]"
+        cell: ({ row }) => (
+          <div className="flex justify-start">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="flex size-8 text-[#A1A1AA] data-[state=open]:bg-[#18181B]"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                align="end"
+                className="w-40"
               >
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
+                <DropdownMenuItem
+                  onClick={() => onViewEmployee(row.original)}
+                >
+                  View Employee
+                </DropdownMenuItem>
 
-            <DropdownMenuContent
-              align="end"
-              className="w-40"
-            >
-              <DropdownMenuItem
-                onClick={() => onViewEmployee(row.original)}
-              >
-                View Employee
-              </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => onEditEmployee(row.original)}
+                >
+                  Edit Employee
+                </DropdownMenuItem>
 
-              <DropdownMenuItem
-                onClick={() => onEditEmployee(row.original)}
-              >
-                Edit Employee
-              </DropdownMenuItem>
+                <DropdownMenuSeparator />
 
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem variant="destructive"
-                onClick={() => onDeleteEmployee(row.original)}
-              >
-                Delete Employee
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      ),
-    },
+                <DropdownMenuItem variant="destructive"
+                  onClick={() => onDeleteEmployee(row.original)}
+                >
+                  Delete Employee
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ),
+      },
+    ]: [])
   ]
 
   return <DataTable columns={columns} data={data} />
