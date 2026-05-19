@@ -46,44 +46,8 @@ const data = {
       icon: <IconUsers />,
       isActive: true,
     },
-    {
-      title: "Projects",
-      url: "#",
-      icon: <IconFolder />,
-    },
-    {
-      title: "Insights",
-      url: "#",
-      icon: <IconChartBar />,
-    },
-    {
-      title: "Reports",
-      url: "#",
-      icon: <IconReport />,
-    },
-    {
-      title: "Team Workspace",
-      url: "#",
-      icon: <IconUsers />,
-    },
   ],
-  documents: [
-    {
-      name: "Q3 Marketing Plan",
-      url: "#",
-      icon: <IconFileWord />,
-    },
-    {
-      name: "Revenue Analytics",
-      url: "#",
-      icon: <IconDatabase />,
-    },
-    {
-      name: "Design System",
-      url: "#",
-      icon: <IconFileDescription />,
-    },
-  ],
+  documents: [],
   navSecondary: [
     {
       title: "Settings",

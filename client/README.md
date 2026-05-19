@@ -1,73 +1,276 @@
-# React + TypeScript + Vite
+# Employee Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<div align="center">
 
-Currently, two official plugins are available:
+**Secure full-stack employee management with role-based access control**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+</div>
 
-## React Compiler
+Employee Management System is a modern full-stack web application built for securely managing employee records with authentication, authorization, and scalable CRUD operations. It provides administrators with complete employee management capabilities while maintaining protected, role-based access for standard users.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+* **Secure Authentication**: JWT-based authentication with protected routes
+* **Role-Based Access Control**: Separate admin and user permissions
+* **Employee CRUD Operations**: Create, view, update, and delete employee records
+* **Advanced Filtering & Search**: Search employees by name/email with filters
+* **Responsive Dashboard UI**: Clean, modern, and mobile-friendly interface
+* **Protected APIs**: Secure backend route protection and validation
+* **Reusable UI Components**: Modular frontend architecture using reusable components
+* **Drawer-Based Workflows**: Smooth create, edit, and details interactions
+* **Pagination Support**: Efficient employee data handling
+* **Type-Safe Architecture**: Full TypeScript implementation across frontend and backend
+* **Validation Layer**: Strong server-side and frontend validation
+* **Professional Project Structure**: Scalable feature-based architecture
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Quick Start
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Clone the repository
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/roydza27/PRODIGY_FS_02.git
+cd PRODIGY_FS_02
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### Setup environment variables
+
+Create a `.env` file inside the `server/` directory:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+### Run the backend
+
+```bash
+cd server
+npm run dev
+```
+
+### Run the frontend
+
+```bash
+cd client
+npm run dev
+```
+
+Then open:
+
+```txt
+http://localhost:5173
+```
+
+---
+
+## 🔐 Authentication & Authorization
+
+The application uses:
+
+* JWT-based authentication
+* Protected backend routes
+* Protected frontend routes
+* Role-based authorization middleware
+* Admin-only management actions
+
+### Roles
+
+#### Admin
+
+* Full employee CRUD access
+* Create/edit/delete employees
+* Access all protected management actions
+
+#### User
+
+* Read-only employee access
+* View employee information
+* Cannot modify employee data
+
+---
+
+## 🧱 Technologies Used
+
+### Frontend
+
+* **React 18**
+* **TypeScript**
+* **Vite**
+* **Tailwind CSS**
+* **shadcn/ui**
+* **React Router**
+* **TanStack Table**
+* **Lucide React**
+
+### Backend
+
+* **Node.js**
+* **Express.js**
+* **MongoDB**
+* **Mongoose**
+* **JWT Authentication**
+* **Zod Validation**
+
+---
+
+## 📂 Project Structure
+
+```txt
+PRODIGY_FS_02/
+├── client/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── providers/
+│   │   │   ├── router/
+│   │   │   └── store/
+│   │   │
+│   │   ├── features/
+│   │   │   ├── auth/
+│   │   │   ├── dashboard/
+│   │   │   ├── employee/
+│   │   │   │   ├── components/
+│   │   │   │   ├── pages/
+│   │   │   │   ├── services/
+│   │   │   │   └── types/
+│   │   │   └── home/
+│   │   │
+│   │   ├── shared/
+│   │   │   └── components/ui/
+│   │   │
+│   │   └── layouts/
+│   │
+│   └── package.json
+│
+├── server/
+│   ├── src/
+│   │   ├── middleware/
+│   │   ├── modules/
+│   │   │   ├── auth/
+│   │   │   └── employee/
+│   │   ├── config/
+│   │   └── utils/
+│   │
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+## 📋 Employee Module Features
+
+### Employee Management
+
+* Add employees
+* Update employee records
+* Delete employees
+* View employee details
+* Search employees
+* Filter by department/status
+* Paginated employee listing
+
+### Employee Data
+
+* Full Name
+* Email
+* Phone Number
+* Department
+* Job Title
+* Salary
+* Employment Status
+* Date of Joining
+* Address
+
+---
+
+## 🛡️ Security Features
+
+* Protected API routes
+* JWT verification middleware
+* Role-based route access
+* Server-side validation
+* Request sanitization
+* Proper error handling
+* Hidden admin-only actions
+* Secure password handling
+
+---
+
+## 🎨 UI/UX Highlights
+
+* Modern dark dashboard UI
+* Responsive layouts
+* Drawer-based interactions
+* Interactive employee tables
+* Clean hierarchy and spacing
+* Consistent component design
+* Role-aware interface rendering
+
+---
+
+## ⚙️ Development Commands
+
+### Frontend
+
+```bash
+cd client
+
+npm run dev
+npm run build
+npm run preview
+```
+
+### Backend
+
+```bash
+cd server
+
+npm run dev
+npm run build
+```
+
+---
+
+## 📈 Future Improvements
+
+* Employee profile image uploads
+* Export employees to CSV/PDF
+* Audit logs
+* Advanced analytics dashboard
+* Attendance management
+* Department management module
+* Email notifications
+* Activity tracking
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🙏 Acknowledgments
+
+* shadcn/ui for the component system
+* Tailwind CSS for utility-first styling
+* React ecosystem for frontend architecture
+* Express & MongoDB ecosystem for backend services
+* Lucide React for iconography
+
+---
+
+<div align="center">
+
+**Built with ❤️ using React, TypeScript, Express, and MongoDB**
+
+</div>
